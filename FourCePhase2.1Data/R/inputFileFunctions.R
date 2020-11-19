@@ -12,12 +12,14 @@ get4ceRootDirectoryName <- function() {
 
 #' Returns the name of the directory where site input data is expected to reside.
 #'
+#' @param custom Custom data path. If NULL, use default path
 #' @param fullyQualified Should the return value be a fully-qualified path?  If not, just the name of the directory is returned.
 #' @keywords 4CE
 #' @export
 
-getInputDataDirectoryName <- function(fullyQualified=TRUE) {
+getInputDataDirectoryName <- function(custom=NULL, fullyQualified=TRUE) {
 
+    if (!is.null(custom)) return (custom)
     if (fullyQualified) {
         return(
             file.path(
@@ -35,13 +37,14 @@ getInputDataDirectoryName <- function(fullyQualified=TRUE) {
 #' Throws an error if files are inconsistently named, or if files for multiple site ids are present,
 #' or if required files are missing.
 #'
+#' @param custom Custom data path. If NULL, use default path
 #' @keywords 4CE
 #' @export
 
-getSiteId <- function() {
+getSiteId <- function(custom = NULL) {
 
     ## enumerate files in the input data directory
-    fNames = list.files(getInputDataDirectoryName())
+    fNames = list.files(getInputDataDirectoryName(custom))
 
     ## we are supposed to find a single match to each of these file name patterns
     fNamePatterns = c(
